@@ -6,6 +6,7 @@ const session = require("express-session");
 const passport = require("passport");
 const OAuth2Strategy = require("passport-google-oauth2").Strategy;
 const userdb = require("../model/userSchema");
+const routes = require("../routes/index");
 
 const app = express();
 const PORT = 5000;
@@ -14,9 +15,13 @@ const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
 
 // Middleware
-app.use(cors({origin:{frontendUrl},
-  methods:"GET,POST,PUT,DELETE",
-  credentials:true}));
+app.use(
+  cors({
+    origin: { frontendUrl },
+    methods: "GET,POST,PUT,DELETE",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
@@ -73,33 +78,42 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-app.get("/auth/google",passport.authenticate("google",{scope:["profile","email"]}));
+app.get(
+  "/auth/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
 
-app.get("/auth/google/callback",passport.authenticate("google",{
-    successRedirect:`${frontendUrl}/home`,
-    failureRedirect:`${frontendUrl}/login`
-}))
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: `${frontendUrl}/home`,
+    failureRedirect: `${frontendUrl}/login`,
+  })
+);
 
 // Basic route
 app.get("/", (req, res) => {
   res.send("Hello from Express backend");
 });
 
-app.get("/login/success",async(req,res)=>{
-
-  if(req.user){
-      res.status(200).json({message:"user Login",user:req.user})
-  }else{
-      res.status(400).json({message:"Not Authorized"})
+app.get("/login/success", async (req, res) => {
+  if (req.user) {
+    res.status(200).json({ message: "user Login", user: req.user });
+  } else {
+    res.status(400).json({ message: "Not Authorized" });
   }
-})
+});
 
-app.get("/logout",(req,res,next)=>{
-  req.logout(function(err){
-      if(err){return next(err)}
-      res.redirect(`${frontendUrl}`);
-  })
-})
+app.get("/logout", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect(`${frontendUrl}`);
+  });
+});
+
+app.use("/", routes);
 
 const MONGO_URL = process.env.MONGO_URL;
 
