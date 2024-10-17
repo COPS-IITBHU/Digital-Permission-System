@@ -1,17 +1,26 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
-require("dotenv").config();
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const dotenv = require('dotenv');
 const session = require("express-session");
 const passport = require("passport");
 const OAuth2Strategy = require("passport-google-oauth2").Strategy;
 const userdb = require("../model/userSchema");
+
+// Importing Routers
+const mailRouter = require('./routes/mail');
+
+// Loading the env variables
+dotenv.config();
 
 const app = express();
 const PORT = 5000;
 const frontendUrl = process.env.FRONTEND_URL;
 const clientId = process.env.CLIENT_ID;
 const clientSecret = process.env.CLIENT_SECRET;
+
+// Loading routers on the app
+app.use('/api/mail', mailRouter)
 
 // Middleware
 app.use(cors({origin:{frontendUrl},
@@ -104,9 +113,8 @@ app.get("/logout",(req,res,next)=>{
 const MONGO_URL = process.env.MONGO_URL;
 
 // MongoDB connection (add your MongoDB URL)
-mongoose
-  .connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("Connected to MongoDB"))
+mongoose.connect(process.env.MONGOURL)
+  .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.log(err));
 
 // Start server
