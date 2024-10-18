@@ -6,7 +6,7 @@ const session = require("express-session");
 const passport = require("passport");
 const OAuth2Strategy = require("passport-google-oauth2").Strategy;
 const userdb = require("../model/userSchema");
-const routes = require("../routes/index");
+const routes = require("./routes/index");
 
 // Importing Routers
 const mailRouter = require('./routes/mail');

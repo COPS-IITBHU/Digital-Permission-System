@@ -1,4 +1,5 @@
 const {
+    getVenueByIdService,
     getAllVenuesService,
     createVenueService,
     updateVenueService,
@@ -16,13 +17,31 @@ const {
   
   module.exports.createVenue = async (req, res, next) => {
     try {
-      const venueData = req.body;
-      const newVenue = await createVenueService(venueData);
-      return res.status(201).json(newVenue);
+        const { venueName, venueLocation, seatingCapacity, acAvailable, projectorAvailable } = req.body;
+        if (
+            !venueName ||
+            !venueLocation ||
+            !seatingCapacity ||
+            !acAvailable ||
+            !projectorAvailable
+        ) {
+            console.log("Missing required venue fields");
+            return res.status(400).send("All fields are required");
+        }
+
+        const venueData = {
+            venueName,
+            venueLocation,
+            acAvailable,
+            projectorAvailable
+        };
+
+       const newVenue = await createVenueService(venueData);
+       return res.status(201).json(newVenue);
     } catch (error) {
-      next(error);
+        next(error);
     }
-  };
+};
   
   module.exports.updateVenue = async (req, res, next) => {
     try {
