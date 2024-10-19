@@ -1,4 +1,4 @@
-const Venue = require("../models/venue.model.js");
+const Venue = require("../model/venueSchema.js");
 
 // Create a new venue
 module.exports.createVenueService = async (venueData) => {
