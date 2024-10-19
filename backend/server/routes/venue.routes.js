@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const {
-  // getVenueById, // TODO Complete this
+  getVenueById,
   getAllVenues,
   createVenue,
   updateVenue,
@@ -14,7 +14,7 @@ router.get("/admin/venues", getAllVenues);
 //Route to create venues
 router.post("/admin/venues", createVenue);
 
-// router.get("/admin/venues/:venueId", getVenueById); //TODO WRITE THIS CONTROLLER THIS IS CURRENTLY UNDEFINED
+router.get("/admin/venues/:venueId", getVenueById);
 
 // Route to update venues
 router.put("/admin/venues/:venueId", updateVenue);

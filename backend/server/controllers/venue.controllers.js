@@ -1,5 +1,5 @@
 const {
-  getVenueByIdService, // TODO COMPLETE THIS, THIS IS NOT BEING USED RN
+  getVenueByIdService,
   getAllVenuesService,
   createVenueService,
   updateVenueService,
@@ -64,5 +64,23 @@ module.exports.deleteVenue = async (req, res, next) => {
   }
 };
 
-//TODO WRITE getVenueById controller!!!
+module.exports.getVenueById = async (req,res,next)=>{
+  try {
+    const { venueId } = req.params;
+
+  if (!venueId) {
+    console.log("venue ID not provided");
+    return res.status(400).send("venue ID is required");
+  }
+
+  const venue = await getVenueByIdService(venueId);
+  if (!venue) {
+    return res.status(404).send("venue not found");
+  }
+
+  return res.status(200).json(venue);
+  } catch (error) {
+    next(error);
+  }
+}
   
