@@ -1,4 +1,4 @@
-const Booking = require("../models/booking.model.js"); // import Booking model
+const Booking = require("../model/bookingSchema"); // import Booking model
 
 // Create a new booking
 module.exports.createBookingService = async (bookingData) => {
@@ -65,5 +65,27 @@ module.exports.deleteBooking = async (bookingId) => {
     return deletedBooking;
   } catch (error) {
     throw new Error("Error deleting booking: " + error.message);
+  }
+};
+
+module.exports.getPendingBookingsService = async () => {
+  try {
+    const pendingBookings = await Booking.find({ status: "pending" });
+    return pendingBookings;
+  } catch (error) {
+    throw new Error("Error retrieving pending bookings: " + error.message);
+  }
+};
+
+module.exports.updateBookingStatus = async (bookingId, status) => {
+  try {
+    const updatedBooking = await Booking.findByIdAndUpdate(
+      bookingId,
+      { status },
+      { new: true }
+    );
+    return updatedBooking;
+  } catch (error) {
+    throw new Error("Error updating booking status: " + error.message);
   }
 };

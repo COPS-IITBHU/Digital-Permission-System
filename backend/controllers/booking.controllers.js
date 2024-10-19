@@ -4,6 +4,8 @@ const {
   getAllBookings,
   updateBooking,
   deleteBooking,
+  getPendingBookingsService,
+  updateBookingStatus,
 } = require("../services/booking.service");
 
 // Create Booking
@@ -139,6 +141,35 @@ module.exports.deleteBooking = async (req, res, next) => {
 
     const deletedBooking = await deleteBooking(bookingId);
     return res.status(200).json(deletedBooking);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.getPendingBookings = async (req, res, next) => {
+  try {
+    const pendingBookings = await getPendingBookingsService();
+    return res.status(200).json(pendingBookings);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.acceptBooking = async (req, res, next) => {
+  try {
+    const { bookingId } = req.params;
+    const updatedBooking = await updateBookingStatus(bookingId, "accepted");
+    return res.status(200).json(updatedBooking);
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.rejectBooking = async (req, res, next) => {
+  try {
+    const { bookingId } = req.params;
+    const updatedBooking = await updateBookingStatus(bookingId, "rejected");
+    return res.status(200).json(updatedBooking);
   } catch (error) {
     next(error);
   }

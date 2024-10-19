@@ -6,6 +6,9 @@ const {
   getAllBookings,
   updateBooking,
   deleteBooking,
+  getPendingBookings,
+  acceptBooking,
+  rejectBooking,
 } = require("../controllers/booking.controllers");
 
 // Route to create a new booking
@@ -22,5 +25,9 @@ router.post("/:bookingId", updateBooking);
 
 // Route to delete a booking by its ID
 router.post("/delete", deleteBooking);
+
+router.get("/admin/pending", getPendingBookings);
+router.post("/admin/accept/:bookingId", acceptBooking);
+router.post("/admin/reject/:bookingId", rejectBooking); 
 
 module.exports = router;
