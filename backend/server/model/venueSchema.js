@@ -9,4 +9,5 @@ const venueSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 const Venue = new mongoose.model('Venue', venueSchema);
+
 module.exports = Venue;

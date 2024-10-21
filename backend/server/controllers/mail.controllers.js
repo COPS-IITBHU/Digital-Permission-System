@@ -1,10 +1,4 @@
-const express = require('express');
 const nodemailer = require('nodemailer');
-const dotenv = require('dotenv');
-
-// Loading env variables
-dotenv.config();
-const mailRouter = express.Router();
 
 //Transporter to send mails via nodemailer
 const transporter = nodemailer.createTransport({
@@ -15,7 +9,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-mailRouter.get('/sample/:email', (req,res) => {
+module.exports.sendSampleMail = async (req, res, next) => {
     try{
         transporter.sendMail({
             from: 'noreply@yourdomain.com', // Sample mail
@@ -35,11 +29,7 @@ mailRouter.get('/sample/:email', (req,res) => {
                 })
             }
         })
-    }catch(e){  
-        return res.status(500).json({
-            msg: `${e.message}`
-        })
+    }catch(error){  
+        next(error)
     }
-})
-
-module.exports = mailRouter
+}
